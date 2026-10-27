@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.env.*
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.md
+compose.yaml
+screenshot.png
+.idea/
+.DS_Store

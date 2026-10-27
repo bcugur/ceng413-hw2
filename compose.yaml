@@ -1,0 +1,28 @@
+# CENG413 HW-2: Docker Compose multi-service architecture
+# Two services that find each other by service name over a private network.
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_GREETING: ${APP_GREETING:-Hello}
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+    depends_on:
+      cache:
+        condition: service_healthy
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+
+volumes:
+  redisdata:
